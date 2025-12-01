@@ -2,6 +2,14 @@ const Koa = require("koa");
 const Router = require("koa-router");
 const logger = require("koa-logger");
 const bodyParser = require("koa-bodyparser");
+
+if ("development" === process.env.NODE_ENV) {
+  // 加载环境变量
+  require("dotenv").config({
+    path: ".env.local",
+  });
+}
+
 const fs = require("fs");
 const path = require("path");
 const { init: initDB, Counter } = require("./db");
@@ -61,7 +69,7 @@ const port = process.env.PORT || 80;
 async function bootstrap() {
   await initDB();
   app.listen(port, () => {
-    console.log("启动成功", port);
+    console.log("启动成功", `http://127.0.0.1:${port}`);
   });
 }
 bootstrap();
